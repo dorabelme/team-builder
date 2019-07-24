@@ -1,7 +1,6 @@
 import React from "react";
 import styled from 'styled-components';
 
-
 const CardContent = styled.div`
     padding: 1rem 2rem;
     min-height: 16.5rem;
@@ -32,10 +31,10 @@ function Card(props) {
     console.log(person)
     return (
         <CardContent>
-            <Title>{person.name}</Title>
+            <StyledP>Name: {person.name}</StyledP>
             <StyledP>Email: {person.email}</StyledP>
             <StyledP>Role: {person.role}</StyledP>
-            <button>Edit</button>
+            <button onClick={() => props.editMember(props.person)}>Edit</button>
         </CardContent>
 
     );

@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from "react";
+// import { Route } from "react-router-dom";
 
 function Form(props) {
     const [user, setUser] = useState({ name: "", email: "", role: "" });
- 
+
+    const { editMember, editPerson } = props;
+
+    useEffect(() => {
+        if (editMember) {
+            setUser({ name: editMember.name, email: editMember.email, role: editMember.role, id: editMember.id })
+        } else {
+            editPerson(user);
+        }
+    }, [editMember]);
+
+
     function handleChange(event) {
         const updatedUser = { ...user, [event.target.name]: event.target.value };
         setUser(updatedUser);
@@ -10,14 +22,26 @@ function Form(props) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        console.log("username", user);
-        props.setList(user);
+        if (!editMember) {
+            console.log("username", user);
+            props.setList({ ...user, id: Date.now() });
+            setUser({
+                name: "",
+                email: "",
+                role: "",
+                id: 0,
+            });
+        } else {
+            editPerson({...user, id:editMember.id})
+        };
+        setUser({
+            name: "",
+            email: "",
+            role: "",
+            id: 0,
+        });
     }
 
-    // useEffect(() => {
-    //     setUser(props.memberToEdit)
-
-    // }, [props.memberToEdit]);
 
     return (
         <form onSubmit={handleSubmit}>
