@@ -6,14 +6,11 @@ import { Route } from "react-router-dom";
 import './App.css';
 
 function App() {
-  const [teamList, setTeamList] = useState([{ name: "", email: "", role: "", id: 0}]);
+  const [teamList, setTeamList] = useState([]);
   const [memberToEdit, setMemberToEdit] = useState(null);
 
   function addPersonToList(person) {
-    console.log(person)
-    console.log(teamList)
     const newTeamList = teamList.concat(person);
-    console.log(newTeamList)
     setTeamList(newTeamList);
   }
 
@@ -23,19 +20,21 @@ function App() {
 
   function editPerson(editedPerson) {
     const newPeople = [...teamList];
-    const oldPerson = newPeople.find(person => person.id === editPerson.id);
+    const oldPerson = newPeople.find(person => person.id === editedPerson.id);
+    
     oldPerson.name = editedPerson.name;
-    oldPerson.name = editedPerson.email;
-    oldPerson.name = editedPerson.role;
-    oldPerson.name = editedPerson.id;
+    oldPerson.email = editedPerson.email;
+    oldPerson.role = editedPerson.role;
+
     setTeamList(newPeople);
     setMemberToEdit(null);
-
   }
 
   return (
     <div className="App">
-      <Form editPerson={editPerson} editMember={editMember} setList={addPersonToList} />
+      <h1>Signup Form</h1>
+      <Form editPerson={editPerson} setList={addPersonToList} memberToEdit={memberToEdit} />
+      <h1>Team Members</h1>
       {teamList.map(person => <Card key={person.name} person={person} editMember={editMember} />)}
     </div>
   );

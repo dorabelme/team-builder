@@ -2,17 +2,15 @@ import React, { useState, useEffect } from "react";
 // import { Route } from "react-router-dom";
 
 function Form(props) {
-    const [user, setUser] = useState({ name: "", email: "", role: "" });
+    const [user, setUser] = useState({ name: "", email: "", role: "", id: 0 });
 
-    const { editMember, editPerson } = props;
+    const { editPerson, memberToEdit } = props;
 
     useEffect(() => {
-        if (editMember) {
-            setUser({ name: editMember.name, email: editMember.email, role: editMember.role, id: editMember.id })
-        } else {
-            editPerson(user);
+        if (memberToEdit) {
+            setUser({ name: memberToEdit.name, email: memberToEdit.email, role: memberToEdit.role, id: memberToEdit.id });
         }
-    }, [editMember]);
+    }, [memberToEdit]);
 
 
     function handleChange(event) {
@@ -20,20 +18,7 @@ function Form(props) {
         setUser(updatedUser);
     }
 
-    function handleSubmit(event) {
-        event.preventDefault();
-        if (!editMember) {
-            console.log("username", user);
-            props.setList({ ...user, id: Date.now() });
-            setUser({
-                name: "",
-                email: "",
-                role: "",
-                id: 0,
-            });
-        } else {
-            editPerson({...user, id:editMember.id})
-        };
+    function resetForm() {
         setUser({
             name: "",
             email: "",
@@ -42,11 +27,25 @@ function Form(props) {
         });
     }
 
+    function handleSubmit(event) {
+        event.preventDefault();
+
+        const editingNewPerson = !memberToEdit;
+
+        if (editingNewPerson) {
+            props.setList({ ...user, id: Date.now() });
+        } else {
+            editPerson({ ...user, id: memberToEdit.id });
+        };
+
+        resetForm();
+    }
+
 
     return (
         <form onSubmit={handleSubmit}>
             <fieldset>
-                <legend>Signup</legend>
+                <legend>Add a Member!</legend>
                 <div className="form-group row">
                     <label className="col-sm-2 col-form-label">
                         Name

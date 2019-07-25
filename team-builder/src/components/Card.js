@@ -28,7 +28,7 @@ const StyledP = styled.p`
 
 function Card(props) {
     const person = props.person;
-    console.log(person)
+    // console.log(person)
     return (
         <CardContent>
             <StyledP>Name: {person.name}</StyledP>
